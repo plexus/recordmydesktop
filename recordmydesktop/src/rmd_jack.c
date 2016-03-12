@@ -145,16 +145,34 @@ int rmdStartJackClient(JackData *jdata){
     //in order to allow multiple
     //instances of recordMyDesktop
     //to connetc to a Jack Server
-    strcpy(rmd_client_name,"recordMyDesktop-");
+    strcpy(rmd_client_name, "recordMyDesktop-");
     pid=getpid();
     snprintf( pidbuf, 8, "%d", pid );
     strcat(rmd_client_name,pidbuf);
 
-    if ((jdata->client=(*jack_client_new)(rmd_client_name))==0){
-        fprintf(stderr,"Could not create new client!\n"
-                       "Make sure that Jack server is running!\n");
+    jack_status_t status;
+
+    jdata->client = jack_client_open (rmd_client_name, JackNoStartServer, &status);
+
+
+    if (jdata->client == NULL) {
+        fprintf (stderr, "jack_client_open() failed, "
+                 "status = 0x%2.0x\n", status);
+        if (status & JackServerFailed) {
+            fprintf (stderr, "Unable to connect to JACK server\n");
+        }
         return 15;
     }
+
+    if (status & JackServerStarted) {
+        fprintf (stderr, "JACK server started\n");
+    }
+
+    if (status & JackNameNotUnique) {
+        strcpy(rmd_client_name, jack_get_client_name(jdata->client));
+        fprintf (stderr, "unique name `%s' assigned\n", rmd_client_name);
+    }
+
 //in contrast to ALSA and OSS, Jack dictates frequency
 //and buffersize to the values it was launched with.
 //Supposedly jack_set_buffer_size can set the buffersize
@@ -215,4 +233,3 @@ int rmdStopJackClient(JackData *jdata){
 }
 
 #endif
-
