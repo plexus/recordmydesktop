@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT( [recordmydesktop], [0.3.8.1], )
+AC_INIT( [recordmydesktop], [0.3.8.1-plexus], )
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_SRCDIR([src/rmd.c])
@@ -16,7 +16,7 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 
 AC_CANONICAL_HOST
-AC_C_BIGENDIAN 
+AC_C_BIGENDIAN
 # Checks for header files.
 
 AC_HEADER_DIRENT

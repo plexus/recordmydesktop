@@ -22,6 +22,13 @@ sudo apt-get install libpopt-dev libvorbis-dev libtheora-dev libjack-dev
 ./autogen.sh && ./configure && make
 ```
 
+To make sure you're running the right version, check `--version` for the `-plexus` suffix.
+
+```
+$ src/recordmydesktop --version
+recordMyDesktop v0.3.8.1-plexus
+```
+
 Based on the SVN trunk@602
 
 Project website: http://recordmydesktop.sourceforge.net/about.php
